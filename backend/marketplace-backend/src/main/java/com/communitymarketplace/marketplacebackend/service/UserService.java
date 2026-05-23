@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundException;
 import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundException;
 import com.communitymarketplace.marketplacebackend.dto.UserDTO;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 
 @Service
@@ -15,6 +15,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // GET ALL USERS
     public List<User> getAllUsers() {
@@ -23,6 +24,11 @@ public class UserService {
 
     // SAVE USER
     public User saveUser(User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+
         return userRepository.save(user);
     }
 
@@ -70,7 +76,7 @@ public class UserService {
             return "User not found";
         }
 
-        if (user.getPassword().equals(password)) {
+        if (passwordEncoder.matches(password, user.getPassword())) {
             return "Login successful";
         } else {
             return "Invalid password";
