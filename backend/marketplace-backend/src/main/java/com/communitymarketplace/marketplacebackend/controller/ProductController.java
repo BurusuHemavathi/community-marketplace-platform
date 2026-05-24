@@ -5,6 +5,8 @@ import com.communitymarketplace.marketplacebackend.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -17,6 +19,13 @@ public class ProductController {
     // CREATE PRODUCT
     @PostMapping("/products")
     public Product createProduct(@RequestBody Product product) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        product.setSellerEmail(email);
 
         return productRepository.save(product);
     }

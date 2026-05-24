@@ -28,11 +28,21 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // ALLOW LOGIN AND REGISTER APIs
+        String path = request.getServletPath();
+
+        if (path.equals("/login") || path.equals("/users")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // GET AUTHORIZATION HEADER
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
         String email = null;
 
+        // CHECK TOKEN
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
             token = authHeader.substring(7);
@@ -40,6 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             email = jwtUtil.extractEmail(token);
         }
 
+        // VALIDATE TOKEN
         if (email != null &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
