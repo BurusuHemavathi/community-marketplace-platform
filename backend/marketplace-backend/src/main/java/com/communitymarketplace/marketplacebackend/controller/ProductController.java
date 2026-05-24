@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -43,41 +46,64 @@ public class ProductController {
 
         return productRepository.findById(id).orElse(null);
     }
-
-    // UPDATE PRODUCT
-    @PutMapping("/products/{id}")
-    public Product updateProduct(
-            @PathVariable Long id,
-            @RequestBody Product updatedProduct) {
-
-        Product product = productRepository.findById(id).orElse(null);
-
-        if (product == null) {
-            return null;
-        }
-
-        product.setProductName(updatedProduct.getProductName());
-        product.setPrice(updatedProduct.getPrice());
-        product.setCategory(updatedProduct.getCategory());
-        product.setDescription(updatedProduct.getDescription());
-        product.setImageUrl(updatedProduct.getImageUrl());
-        product.setSellerEmail(updatedProduct.getSellerEmail());
-
-        return productRepository.save(product);
-    }
-
     // DELETE PRODUCT
     @DeleteMapping("/products/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
 
-        Product product = productRepository.findById(id).orElse(null);
+        Product existingProduct = productRepository.findById(id).orElse(null);
 
-        if (product == null) {
-            return "Product Not Found";
+        if (existingProduct == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Product not found");
         }
 
-        productRepository.deleteById(id);
+        String loggedInEmail = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
 
-        return "Product Deleted Successfully";
+        if (!existingProduct.getSellerEmail().equals(loggedInEmail)) {
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You can delete only your own products");
+        }
+
+        productRepository.delete(existingProduct);
+
+        return ResponseEntity.ok("Product deleted successfully");
+    }
+    @PutMapping("/products/{id}")
+    public ResponseEntity<?> updateProduct(
+            @PathVariable Long id,
+            @RequestBody Product updatedProduct
+    ) {
+
+        Product existingProduct = productRepository.findById(id).orElse(null);
+
+        if (existingProduct == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Product not found");
+        }
+
+        String loggedInEmail = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        if (!existingProduct.getSellerEmail().equals(loggedInEmail)) {
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You can update only your own products");
+        }
+
+        existingProduct.setProductName(updatedProduct.getProductName());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setCategory(updatedProduct.getCategory());
+        existingProduct.setDescription(updatedProduct.getDescription());
+        existingProduct.setImageUrl(updatedProduct.getImageUrl());
+
+        Product savedProduct = productRepository.save(existingProduct);
+
+        return ResponseEntity.ok(savedProduct);
     }
 }
