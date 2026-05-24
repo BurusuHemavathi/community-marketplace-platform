@@ -8,6 +8,7 @@ import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundExc
 import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundException;
 import com.communitymarketplace.marketplacebackend.dto.UserDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.communitymarketplace.marketplacebackend.security.JwtUtil;
 import java.util.List;
 
 @Service
@@ -16,6 +17,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    JwtUtil jwtUtil = new JwtUtil();
 
     // GET ALL USERS
     public List<User> getAllUsers() {
@@ -77,8 +79,13 @@ public class UserService {
         }
 
         if (passwordEncoder.matches(password, user.getPassword())) {
-            return "Login successful";
+
+            String token = jwtUtil.generateToken(email);
+
+            return token;
+
         } else {
+
             return "Invalid password";
         }
     }
