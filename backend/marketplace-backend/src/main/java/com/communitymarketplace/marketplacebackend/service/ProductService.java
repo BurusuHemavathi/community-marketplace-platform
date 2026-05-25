@@ -7,6 +7,10 @@ import com.communitymarketplace.marketplacebackend.entity.User;
 import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundException;
 import com.communitymarketplace.marketplacebackend.repository.ProductRepository;
 import com.communitymarketplace.marketplacebackend.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -145,5 +149,23 @@ public class ProductService {
         return products.stream()
                 .map(this::mapToResponseDTO)
                 .toList();
+    }
+    public Page<ProductResponseDTO> getAllProducts(
+            int page,
+            int size,
+            String sortBy
+    ) {
+
+        Pageable pageable =
+                PageRequest.of(
+                        page,
+                        size,
+                        Sort.by(sortBy)
+                );
+
+        Page<Product> productPage =
+                productRepository.findAll(pageable);
+
+        return productPage.map(this::mapToResponseDTO);
     }
 }

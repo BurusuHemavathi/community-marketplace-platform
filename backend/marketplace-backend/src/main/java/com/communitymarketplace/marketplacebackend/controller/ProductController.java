@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-
+import org.springframework.data.domain.Page;
 @RestController
 public class ProductController {
 
@@ -39,10 +39,25 @@ public class ProductController {
     // GET ALL PRODUCTS
 
     @GetMapping("/products")
-    public ResponseEntity<?> getAllProducts() {
+    public ResponseEntity<?> getAllProducts(
 
-        List<ProductResponseDTO> products =
-                productService.getAllProducts();
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size,
+
+            @RequestParam(defaultValue = "id")
+            String sortBy
+
+    ) {
+
+        Page<ProductResponseDTO> products =
+                productService.getAllProducts(
+                        page,
+                        size,
+                        sortBy
+                );
 
         return ResponseEntity.ok(products);
     }
