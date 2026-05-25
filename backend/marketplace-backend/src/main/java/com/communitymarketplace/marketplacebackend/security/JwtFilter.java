@@ -28,49 +28,34 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // ALLOW LOGIN AND REGISTER APIs
-        String path = request.getServletPath();
-
-        if (path.equals("/login") || path.equals("/users")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // GET AUTHORIZATION HEADER
         String authHeader = request.getHeader("Authorization");
 
         String token = null;
         String email = null;
 
-        // CHECK TOKEN
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
 
             token = authHeader.substring(7);
 
-            email = jwtUtil.extractEmail(token);
+            email = jwtUtil.extractUsername(token);
         }
 
-        // VALIDATE TOKEN
-        if (email != null &&
+        if(email != null &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (jwtUtil.validateToken(token, email)) {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            new ArrayList<>()
+                    );
 
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                email,
-                                null,
-                                new ArrayList<>()
-                        );
+            authenticationToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authToken);
-            }
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authenticationToken);
         }
 
         filterChain.doFilter(request, response);

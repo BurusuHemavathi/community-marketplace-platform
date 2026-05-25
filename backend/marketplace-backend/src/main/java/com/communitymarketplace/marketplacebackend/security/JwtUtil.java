@@ -12,8 +12,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private final String SECRET_KEY =
-            "myverysecuresecretkeymyverysecuresecretkey123";
-    // GENERATE TOKEN
+            "myverysecuresecretkeyforjwtauthenticationproject2026";
+
     public String generateToken(String email) {
 
         return Jwts.builder()
@@ -26,26 +26,16 @@ public class JwtUtil {
                 .compact();
     }
 
-    // EXTRACT EMAIL
-    public String extractEmail(String token) {
+    public String extractUsername(String token) {
 
         return extractClaims(token).getSubject();
     }
 
-    // EXTRACT CLAIMS
-    private Claims extractClaims(String token) {
+    public Claims extractClaims(String token) {
 
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    // VALIDATE TOKEN
-    public boolean validateToken(String token, String email) {
-
-        String extractedEmail = extractEmail(token);
-
-        return extractedEmail.equals(email);
     }
 }

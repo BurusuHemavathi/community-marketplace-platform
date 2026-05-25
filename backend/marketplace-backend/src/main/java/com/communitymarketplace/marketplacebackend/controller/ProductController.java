@@ -1,109 +1,102 @@
 package com.communitymarketplace.marketplacebackend.controller;
 
-import com.communitymarketplace.marketplacebackend.entity.Product;
-import com.communitymarketplace.marketplacebackend.repository.ProductRepository;
+import com.communitymarketplace.marketplacebackend.dto.ProductRequestDTO;
+import com.communitymarketplace.marketplacebackend.dto.ProductResponseDTO;
+import com.communitymarketplace.marketplacebackend.service.ProductService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     // CREATE PRODUCT
+
     @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
+    public ResponseEntity<?> addProduct(
+            @Valid @RequestBody ProductRequestDTO productDTO,
+            Principal principal
+    ) {
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+        ProductResponseDTO responseDTO =
+                productService.addProduct(
+                        productDTO,
+                        principal.getName()
+                );
 
-        String email = authentication.getName();
-
-        product.setSellerEmail(email);
-
-        return productRepository.save(product);
+        return ResponseEntity.ok(responseDTO);
     }
 
     // GET ALL PRODUCTS
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
 
-        return productRepository.findAll();
+    @GetMapping("/products")
+    public ResponseEntity<?> getAllProducts() {
+
+        List<ProductResponseDTO> products =
+                productService.getAllProducts();
+
+        return ResponseEntity.ok(products);
     }
 
     // GET PRODUCT BY ID
+
     @GetMapping("/products/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ResponseEntity<?> getProductById(
+            @PathVariable Long id
+    ) {
 
-        return productRepository.findById(id).orElse(null);
+        ProductResponseDTO product =
+                productService.getProductById(id);
+
+        return ResponseEntity.ok(product);
     }
-    // DELETE PRODUCT
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
 
-        Product existingProduct = productRepository.findById(id).orElse(null);
+    // UPDATE PRODUCT
 
-        if (existingProduct == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found");
-        }
-
-        String loggedInEmail = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        if (!existingProduct.getSellerEmail().equals(loggedInEmail)) {
-
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("You can delete only your own products");
-        }
-
-        productRepository.delete(existingProduct);
-
-        return ResponseEntity.ok("Product deleted successfully");
-    }
     @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(
             @PathVariable Long id,
-            @RequestBody Product updatedProduct
+            @Valid @RequestBody ProductRequestDTO dto
     ) {
 
-        Product existingProduct = productRepository.findById(id).orElse(null);
+        ProductResponseDTO updatedProduct =
+                productService.updateProduct(id, dto);
 
-        if (existingProduct == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found");
-        }
+        return ResponseEntity.ok(updatedProduct);
+    }
 
-        String loggedInEmail = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
+    // DELETE PRODUCT
 
-        if (!existingProduct.getSellerEmail().equals(loggedInEmail)) {
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<?> deleteProduct(
+            @PathVariable Long id
+    ) {
 
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("You can update only your own products");
-        }
+        String message =
+                productService.deleteProduct(id);
 
-        existingProduct.setProductName(updatedProduct.getProductName());
-        existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setCategory(updatedProduct.getCategory());
-        existingProduct.setDescription(updatedProduct.getDescription());
-        existingProduct.setImageUrl(updatedProduct.getImageUrl());
+        return ResponseEntity.ok(message);
+    }
 
-        Product savedProduct = productRepository.save(existingProduct);
+    // SEARCH PRODUCTS
 
-        return ResponseEntity.ok(savedProduct);
+    @GetMapping("/products/search")
+    public ResponseEntity<?> searchProducts(
+            @RequestParam String keyword
+    ) {
+
+        List<ProductResponseDTO> products =
+                productService.searchProducts(keyword);
+
+        return ResponseEntity.ok(products);
     }
 }

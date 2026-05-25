@@ -11,9 +11,14 @@ public class User {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
     private String role;
+
     public Long getId() {
         return id;
     }
@@ -53,5 +58,4 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
-    // getters and setters
 }

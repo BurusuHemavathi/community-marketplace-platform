@@ -1,72 +1,28 @@
 package com.communitymarketplace.marketplacebackend.controller;
 
+import com.communitymarketplace.marketplacebackend.dto.UserDTO;
 import com.communitymarketplace.marketplacebackend.entity.User;
-import com.communitymarketplace.marketplacebackend.repository.UserRepository;
-import com.communitymarketplace.marketplacebackend.security.JwtUtil;
+import com.communitymarketplace.marketplacebackend.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @GetMapping("/")
-    public String home() {
-        return "Hello";
-    }
+    private UserService userService;
 
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
+    public User registerUser(@Valid @RequestBody UserDTO userDTO) {
 
-        user.setPassword(
-                passwordEncoder.encode(user.getPassword())
-        );
-
-        return userRepository.save(user);
+        return userService.registerUser(userDTO);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody User loginUser) {
+    @PostMapping("/authenticate")
+    public String login(@Valid @RequestBody UserDTO userDTO) {
 
-        User user = userRepository.findByEmail(loginUser.getEmail());
-
-        if (user == null) {
-            return "User Not Found";
-        }
-
-        if (!passwordEncoder.matches(
-                loginUser.getPassword(),
-                user.getPassword())) {
-
-            return "Invalid Password";
-        }
-
-        String token = jwtUtil.generateToken(user.getEmail());
-
-        return token;
-    }
-
-    @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable Long id) {
-
-        User user = userRepository.findById(id).orElse(null);
-
-        if (user == null) {
-            return "User Not Found";
-        }
-
-        userRepository.deleteById(id);
-
-        return "User Deleted Successfully";
+        return userService.login(userDTO);
     }
 }

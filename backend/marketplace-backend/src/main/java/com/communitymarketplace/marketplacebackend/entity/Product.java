@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Product {
@@ -12,14 +15,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Product name is required")
     private String productName;
 
-    private String description;
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be positive")
+    private Double price;
 
-    private double price;
-
+    @NotBlank(message = "Category is required")
     private String category;
 
+    @NotBlank(message = "Description is required")
+    private String description;
+
+    @NotBlank(message = "Image URL is required")
     private String imageUrl;
 
     private String sellerEmail;
