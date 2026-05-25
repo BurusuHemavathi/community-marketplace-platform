@@ -2,46 +2,29 @@ package com.communitymarketplace.marketplacebackend.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ProductRequestDTO {
 
-    @NotBlank(message = "Product name is required")
-    private String productName;
-
-    @Min(value = 1, message = "Price must be positive")
-    private double price;
-
-    @NotBlank(message = "Category is required")
-    private String category;
+    @NotBlank(message = "Title is required")
+    private String title;
 
     @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "Image URL is required")
-    private String imageUrl;
+    @NotNull(message = "Price is required")
+    @Min(value = 1, message = "Price must be greater than 0")
+    private Double price;
 
-    public String getProductName() {
-        return productName;
+    @NotBlank(message = "Category is required")
+    private String category;
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -52,11 +35,19 @@ public class ProductRequestDTO {
         this.description = description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

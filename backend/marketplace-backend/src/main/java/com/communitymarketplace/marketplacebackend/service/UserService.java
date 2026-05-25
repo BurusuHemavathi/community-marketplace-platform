@@ -1,5 +1,6 @@
 package com.communitymarketplace.marketplacebackend.service;
 
+import com.communitymarketplace.marketplacebackend.dto.LoginDTO;
 import com.communitymarketplace.marketplacebackend.dto.UserDTO;
 import com.communitymarketplace.marketplacebackend.entity.User;
 import com.communitymarketplace.marketplacebackend.repository.UserRepository;
@@ -28,6 +29,7 @@ public class UserService {
         User user = new User();
 
         user.setName(userDTO.getName());
+
         user.setEmail(userDTO.getEmail());
 
         user.setPassword(
@@ -41,24 +43,24 @@ public class UserService {
 
     // LOGIN USER
 
-    public String login(UserDTO userDTO) {
+    public String login(LoginDTO loginDTO) {
 
-        User user = userRepository.findByEmail(userDTO.getEmail());
+        User user = userRepository.findByEmail(
+                loginDTO.getEmail()
+        );
 
-        if (user == null) {
-
-            return "User Not Found";
+        if(user == null) {
+            throw new RuntimeException("User not found");
         }
 
-        boolean passwordMatches =
+        boolean isPasswordCorrect =
                 passwordEncoder.matches(
-                        userDTO.getPassword(),
+                        loginDTO.getPassword(),
                         user.getPassword()
                 );
 
-        if (!passwordMatches) {
-
-            return "Invalid Password";
+        if(!isPasswordCorrect) {
+            throw new RuntimeException("Invalid password");
         }
 
         return jwtUtil.generateToken(user.getEmail());

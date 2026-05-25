@@ -1,40 +1,26 @@
 package com.communitymarketplace.marketplacebackend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Product name is required")
     private String productName;
 
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be positive")
-    private Double price;
-
-    @NotBlank(message = "Category is required")
-    private String category;
-
-    @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "Image URL is required")
-    private String imageUrl;
+    private Double price;
 
-    private String sellerEmail;
+    private String category;
 
-    public Product() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
 
     public Long getId() {
         return id;
@@ -60,11 +46,11 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -76,19 +62,11 @@ public class Product {
         this.category = category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getSellerEmail() {
-        return sellerEmail;
-    }
-
-    public void setSellerEmail(String sellerEmail) {
-        this.sellerEmail = sellerEmail;
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 }

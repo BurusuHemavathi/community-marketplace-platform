@@ -4,11 +4,10 @@ public class ProductResponseDTO {
 
     private Long id;
     private String productName;
-    private double price;
-    private String category;
     private String description;
-    private String imageUrl;
-    private String sellerEmail;
+    private Double price;
+    private String category;
+    private String sellerName;
 
     public Long getId() {
         return id;
@@ -26,11 +25,19 @@ public class ProductResponseDTO {
         this.productName = productName;
     }
 
-    public double getPrice() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -42,27 +49,11 @@ public class ProductResponseDTO {
         this.category = category;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSellerName() {
+        return sellerName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getSellerEmail() {
-        return sellerEmail;
-    }
-
-    public void setSellerEmail(String sellerEmail) {
-        this.sellerEmail = sellerEmail;
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 }

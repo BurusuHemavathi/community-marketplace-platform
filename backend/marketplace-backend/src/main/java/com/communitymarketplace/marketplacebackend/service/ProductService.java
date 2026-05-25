@@ -3,13 +3,16 @@ package com.communitymarketplace.marketplacebackend.service;
 import com.communitymarketplace.marketplacebackend.dto.ProductRequestDTO;
 import com.communitymarketplace.marketplacebackend.dto.ProductResponseDTO;
 import com.communitymarketplace.marketplacebackend.entity.Product;
+import com.communitymarketplace.marketplacebackend.entity.User;
+import com.communitymarketplace.marketplacebackend.exception.ResourceNotFoundException;
 import com.communitymarketplace.marketplacebackend.repository.ProductRepository;
+import com.communitymarketplace.marketplacebackend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -17,26 +20,33 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    // ADD PRODUCT
+    @Autowired
+    private UserRepository userRepository;
+
+    // CREATE PRODUCT
 
     public ProductResponseDTO addProduct(
             ProductRequestDTO productDTO,
-            String sellerEmail
+            String email
     ) {
+
+        User seller = userRepository.findByEmail(email);
 
         Product product = new Product();
 
-        product.setProductName(productDTO.getProductName());
-        product.setPrice(productDTO.getPrice());
-        product.setCategory(productDTO.getCategory());
-        product.setDescription(productDTO.getDescription());
-        product.setImageUrl(productDTO.getImageUrl());
+        product.setProductName(productDTO.getTitle());
 
-        product.setSellerEmail(sellerEmail);
+        product.setDescription(productDTO.getDescription());
+
+        product.setPrice(productDTO.getPrice());
+
+        product.setCategory(productDTO.getCategory());
+
+        product.setSeller(seller);
 
         Product savedProduct = productRepository.save(product);
 
-        return convertToDTO(savedProduct);
+        return mapToResponseDTO(savedProduct);
     }
 
     // GET ALL PRODUCTS
@@ -45,15 +55,9 @@ public class ProductService {
 
         List<Product> products = productRepository.findAll();
 
-        List<ProductResponseDTO> responseList =
-                new ArrayList<>();
-
-        for(Product product : products) {
-
-            responseList.add(convertToDTO(product));
-        }
-
-        return responseList;
+        return products.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
     // GET PRODUCT BY ID
@@ -62,32 +66,39 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found"));
+                        new ResourceNotFoundException(
+                                "Product not found with id: " + id
+                        )
+                );
 
-        return convertToDTO(product);
+        return mapToResponseDTO(product);
     }
 
     // UPDATE PRODUCT
 
     public ProductResponseDTO updateProduct(
             Long id,
-            ProductRequestDTO dto
+            ProductRequestDTO productDTO
     ) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found"));
+                        new ResourceNotFoundException(
+                                "Product not found with id: " + id
+                        )
+                );
 
-        product.setProductName(dto.getProductName());
-        product.setPrice(dto.getPrice());
-        product.setCategory(dto.getCategory());
-        product.setDescription(dto.getDescription());
-        product.setImageUrl(dto.getImageUrl());
+        product.setProductName(productDTO.getTitle());
 
-        Product updatedProduct =
-                productRepository.save(product);
+        product.setDescription(productDTO.getDescription());
 
-        return convertToDTO(updatedProduct);
+        product.setPrice(productDTO.getPrice());
+
+        product.setCategory(productDTO.getCategory());
+
+        Product updatedProduct = productRepository.save(product);
+
+        return mapToResponseDTO(updatedProduct);
     }
 
     // DELETE PRODUCT
@@ -96,49 +107,43 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found"));
+                        new ResourceNotFoundException(
+                                "Product not found with id: " + id
+                        )
+                );
 
         productRepository.delete(product);
 
         return "Product deleted successfully";
     }
 
-    // SEARCH PRODUCTS
+    // ENTITY → DTO
 
-    public List<ProductResponseDTO> searchProducts(
-            String keyword
-    ) {
+    private ProductResponseDTO mapToResponseDTO(Product product) {
 
-        List<Product> products =
-                productRepository
-                        .findByProductNameContainingIgnoreCase(keyword);
-
-        List<ProductResponseDTO> responseList =
-                new ArrayList<>();
-
-        for(Product product : products) {
-
-            responseList.add(convertToDTO(product));
-        }
-
-        return responseList;
-    }
-
-    // COMMON DTO CONVERTER
-
-    private ProductResponseDTO convertToDTO(Product product) {
-
-        ProductResponseDTO dto =
-                new ProductResponseDTO();
+        ProductResponseDTO dto = new ProductResponseDTO();
 
         dto.setId(product.getId());
+
         dto.setProductName(product.getProductName());
-        dto.setPrice(product.getPrice());
-        dto.setCategory(product.getCategory());
+
         dto.setDescription(product.getDescription());
-        dto.setImageUrl(product.getImageUrl());
-        dto.setSellerEmail(product.getSellerEmail());
+
+        dto.setPrice(product.getPrice());
+
+        dto.setCategory(product.getCategory());
+
+        dto.setSellerName(product.getSeller().getName());
 
         return dto;
+    }
+    public List<ProductResponseDTO> searchProducts(String keyword) {
+
+        List<Product> products =
+                productRepository.findByProductNameContainingIgnoreCase(keyword);
+
+        return products.stream()
+                .map(this::mapToResponseDTO)
+                .toList();
     }
 }
