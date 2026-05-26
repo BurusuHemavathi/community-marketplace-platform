@@ -107,7 +107,7 @@ public class ProductService {
 
     // DELETE PRODUCT
 
-    public String deleteProduct(Long id) {
+    public String deleteProduct(Long id, String email) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
@@ -116,11 +116,19 @@ public class ProductService {
                         )
                 );
 
+        // CHECK OWNER
+
+        if (!product.getSeller().getEmail().equals(email)) {
+
+            throw new RuntimeException(
+                    "You can delete only your own products"
+            );
+        }
+
         productRepository.delete(product);
 
         return "Product deleted successfully";
     }
-
     // ENTITY → DTO
 
     private ProductResponseDTO mapToResponseDTO(Product product) {

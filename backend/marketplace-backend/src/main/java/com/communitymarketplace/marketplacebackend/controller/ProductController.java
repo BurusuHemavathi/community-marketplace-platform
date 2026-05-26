@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import java.security.Principal;
 @RestController
 public class ProductController {
 
@@ -93,11 +94,15 @@ public class ProductController {
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> deleteProduct(
-            @PathVariable Long id
+            @PathVariable Long id,
+            Principal principal
     ) {
 
         String message =
-                productService.deleteProduct(id);
+                productService.deleteProduct(
+                        id,
+                        principal.getName()
+                );
 
         return ResponseEntity.ok(message);
     }
