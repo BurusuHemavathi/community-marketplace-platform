@@ -82,25 +82,51 @@ public class ProductService {
 
     public ProductResponseDTO updateProduct(
             Long id,
-            ProductRequestDTO productDTO
+            ProductRequestDTO productDTO,
+            String email
     ) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Product not found with id: " + id
-                        )
-                );
+                        new ResourceNotFoundException("Product not found"));
 
-        product.setProductName(productDTO.getTitle());
+        User user = userRepository.findByEmail(email);
 
-        product.setDescription(productDTO.getDescription());
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
 
-        product.setPrice(productDTO.getPrice());
+        boolean isOwner =
+                product.getSeller().getEmail().equals(email);
 
-        product.setCategory(productDTO.getCategory());
+        boolean isAdmin =
+                user.getRole().equalsIgnoreCase("ADMIN");
 
-        Product updatedProduct = productRepository.save(product);
+        if (!isOwner && !isAdmin) {
+
+            throw new RuntimeException(
+                    "You can update only your own products"
+            );
+        }
+
+        product.setProductName(
+                productDTO.getTitle()
+        );
+
+        product.setDescription(
+                productDTO.getDescription()
+        );
+
+        product.setPrice(
+                productDTO.getPrice()
+        );
+
+        product.setCategory(
+                productDTO.getCategory()
+        );
+
+        Product updatedProduct =
+                productRepository.save(product);
 
         return mapToResponseDTO(updatedProduct);
     }
@@ -111,14 +137,21 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Product not found with id: " + id
-                        )
-                );
+                        new ResourceNotFoundException("Product not found"));
 
-        // CHECK OWNER
+        User user = userRepository.findByEmail(email);
 
-        if (!product.getSeller().getEmail().equals(email)) {
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        boolean isOwner =
+                product.getSeller().getEmail().equals(email);
+
+        boolean isAdmin =
+                user.getRole().equalsIgnoreCase("ADMIN");
+
+        if (!isOwner && !isAdmin) {
 
             throw new RuntimeException(
                     "You can delete only your own products"

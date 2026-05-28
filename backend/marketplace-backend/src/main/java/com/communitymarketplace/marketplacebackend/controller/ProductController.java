@@ -7,13 +7,12 @@ import com.communitymarketplace.marketplacebackend.service.ProductService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
-import org.springframework.data.domain.Page;
-import java.security.Principal;
+
 @RestController
 public class ProductController {
 
@@ -24,7 +23,9 @@ public class ProductController {
 
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(
+
             @Valid @RequestBody ProductRequestDTO productDTO,
+
             Principal principal
     ) {
 
@@ -35,32 +36,6 @@ public class ProductController {
                 );
 
         return ResponseEntity.ok(responseDTO);
-    }
-
-    // GET ALL PRODUCTS
-
-    @GetMapping("/products")
-    public ResponseEntity<?> getAllProducts(
-
-            @RequestParam(defaultValue = "0")
-            int page,
-
-            @RequestParam(defaultValue = "5")
-            int size,
-
-            @RequestParam(defaultValue = "id")
-            String sortBy
-
-    ) {
-
-        Page<ProductResponseDTO> products =
-                productService.getAllProducts(
-                        page,
-                        size,
-                        sortBy
-                );
-
-        return ResponseEntity.ok(products);
     }
 
     // GET PRODUCT BY ID
@@ -76,16 +51,49 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    // GET ALL PRODUCTS WITH PAGINATION
+
+    @GetMapping("/products")
+    public ResponseEntity<?> getAllProducts(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size,
+
+            @RequestParam(defaultValue = "id")
+            String sortBy
+    ) {
+
+        Page<ProductResponseDTO> products =
+                productService.getAllProducts(
+                        page,
+                        size,
+                        sortBy
+                );
+
+        return ResponseEntity.ok(products);
+    }
+
     // UPDATE PRODUCT
 
     @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProduct(
+
             @PathVariable Long id,
-            @Valid @RequestBody ProductRequestDTO dto
+
+            @Valid @RequestBody ProductRequestDTO productDTO,
+
+            Principal principal
     ) {
 
         ProductResponseDTO updatedProduct =
-                productService.updateProduct(id, dto);
+                productService.updateProduct(
+                        id,
+                        productDTO,
+                        principal.getName()
+                );
 
         return ResponseEntity.ok(updatedProduct);
     }
@@ -94,7 +102,9 @@ public class ProductController {
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> deleteProduct(
+
             @PathVariable Long id,
+
             Principal principal
     ) {
 
@@ -111,12 +121,12 @@ public class ProductController {
 
     @GetMapping("/products/search")
     public ResponseEntity<?> searchProducts(
+
             @RequestParam String keyword
     ) {
 
-        List<ProductResponseDTO> products =
-                productService.searchProducts(keyword);
-
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(
+                productService.searchProducts(keyword)
+        );
     }
 }

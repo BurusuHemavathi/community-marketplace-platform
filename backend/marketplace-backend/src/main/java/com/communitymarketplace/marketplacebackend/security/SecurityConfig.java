@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,17 +28,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
 
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
+
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/users").permitAll()
+                        .requestMatchers("/users")
+                        .permitAll()
 
-                        .requestMatchers("/authenticate").permitAll()
+                        .requestMatchers("/authenticate")
+                        .permitAll()
 
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -44,21 +55,16 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
-
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                .formLogin(form -> form.disable())
-
-                .httpBasic(httpBasic -> httpBasic.disable())
 
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class
-                );
+                )
+
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }

@@ -28,34 +28,62 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+        String authHeader =
+                request.getHeader("Authorization");
 
         String token = null;
+
         String email = null;
 
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+        // PUBLIC URLS
+
+        String path = request.getServletPath();
+
+        if (path.equals("/authenticate")
+                || path.equals("/users")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+
+            filterChain.doFilter(request, response);
+
+            return;
+        }
+
+        // EXTRACT TOKEN
+
+        if (authHeader != null
+                && authHeader.startsWith("Bearer ")) {
 
             token = authHeader.substring(7);
 
             email = jwtUtil.extractUsername(token);
         }
 
-        if(email != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+        // VALIDATE TOKEN
 
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(
-                            email,
-                            null,
-                            new ArrayList<>()
-                    );
+        if (email != null
+                && SecurityContextHolder
+                .getContext()
+                .getAuthentication() == null) {
 
-            authenticationToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request)
-            );
+            if (jwtUtil.validateToken(token)) {
 
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authenticationToken);
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                email,
+                                null,
+                                new ArrayList<>()
+                        );
+
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
+                );
+
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(authToken);
+            }
         }
 
         filterChain.doFilter(request, response);
