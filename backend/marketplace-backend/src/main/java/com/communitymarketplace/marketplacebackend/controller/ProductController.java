@@ -3,6 +3,7 @@ package com.communitymarketplace.marketplacebackend.controller;
 import com.communitymarketplace.marketplacebackend.dto.ProductRequestDTO;
 import com.communitymarketplace.marketplacebackend.dto.ProductResponseDTO;
 import com.communitymarketplace.marketplacebackend.service.ProductService;
+import com.communitymarketplace.marketplacebackend.service.CloudinaryService;
 
 import jakarta.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -19,6 +21,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
     // CREATE PRODUCT
 
     @PostMapping("/products")
@@ -128,5 +132,17 @@ public class ProductController {
         return ResponseEntity.ok(
                 productService.searchProducts(keyword)
         );
+    }
+    @PostMapping("/upload-image")
+    public ResponseEntity<?> uploadImage(
+
+            @RequestParam("file")
+            MultipartFile file
+    ) {
+
+        String imageUrl =
+                cloudinaryService.uploadFile(file);
+
+        return ResponseEntity.ok(imageUrl);
     }
 }

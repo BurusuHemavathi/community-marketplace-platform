@@ -18,6 +18,7 @@ public class ProductRequestDTO {
 
     @NotBlank(message = "Category is required")
     private String category;
+    private String imageUrl;
 
     public String getTitle() {
         return title;
@@ -49,5 +50,13 @@ public class ProductRequestDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

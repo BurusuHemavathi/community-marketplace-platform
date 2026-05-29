@@ -48,6 +48,8 @@ public class ProductService {
 
         product.setSeller(seller);
 
+        product.setImageUrl(productDTO.getImageUrl());
+
         Product savedProduct = productRepository.save(product);
 
         return mapToResponseDTO(savedProduct);
@@ -125,6 +127,10 @@ public class ProductService {
                 productDTO.getCategory()
         );
 
+        product.setImageUrl(
+                productDTO.getImageUrl()
+        );
+
         Product updatedProduct =
                 productRepository.save(product);
 
@@ -179,6 +185,8 @@ public class ProductService {
         dto.setCategory(product.getCategory());
 
         dto.setSellerName(product.getSeller().getName());
+
+        dto.setImageUrl(product.getImageUrl());
 
         return dto;
     }
