@@ -5,6 +5,8 @@ import com.communitymarketplace.marketplacebackend.dto.UserDTO;
 import com.communitymarketplace.marketplacebackend.entity.User;
 import com.communitymarketplace.marketplacebackend.repository.UserRepository;
 import com.communitymarketplace.marketplacebackend.security.JwtUtil;
+import com.communitymarketplace.marketplacebackend.dto.ProfileResponseDTO;
+import com.communitymarketplace.marketplacebackend.dto.UpdateProfileDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,5 +66,57 @@ public class UserService {
         }
 
         return jwtUtil.generateToken(user.getEmail());
+    }
+    public ProfileResponseDTO getProfile(String email) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        ProfileResponseDTO dto = new ProfileResponseDTO();
+
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
+
+        return dto;
+    }
+
+    public ProfileResponseDTO updateProfile(
+            String email,
+            UpdateProfileDTO updateDTO
+    ) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        user.setName(updateDTO.getName());
+
+        if (updateDTO.getPassword() != null
+                && !updateDTO.getPassword().isEmpty()) {
+
+            user.setPassword(
+                    passwordEncoder.encode(
+                            updateDTO.getPassword()
+                    )
+            );
+        }
+
+        User updatedUser =
+                userRepository.save(user);
+
+        ProfileResponseDTO dto =
+                new ProfileResponseDTO();
+
+        dto.setName(updatedUser.getName());
+        dto.setEmail(updatedUser.getEmail());
+        dto.setRole(updatedUser.getRole());
+
+        return dto;
     }
 }
