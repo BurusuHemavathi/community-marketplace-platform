@@ -38,34 +38,102 @@ function Wishlist() {
       console.log(error);
     }
   };
+  const removeFromWishlist = async (productId) => {
 
-  return (
-    <div>
+  try {
 
-      <h1>Wishlist Page</h1>
+    const token = localStorage.getItem("token");
 
-      <h2>Total Items: {wishlist.length}</h2>
-
+    await api.delete(
+      `/wishlist/${productId}`,
       {
-        wishlist.map((item) => (
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
 
-          <div key={item.id}>
+    alert("Removed from Wishlist");
 
-            <h3>{item.product?.productName}</h3>
+    fetchWishlist();
 
-            <p>{item.product?.description}</p>
+  } catch (error) {
 
-            <p>₹ {item.product?.price}</p>
+    alert(
+      error.response?.status ||
+      error.message
+    );
+  }
+};
+ return (
+  <div className="container mt-4">
 
-            <hr />
+    <h1 className="text-center mb-4">
+      Wishlist
+    </h1>
+
+    <h4 className="mb-4">
+      Total Items: {wishlist.length}
+    </h4>
+
+    <div className="row">
+
+      {wishlist.map((item) => (
+
+        <div
+          className="col-md-4 mb-4"
+          key={item.id}
+        >
+
+          <div className="card shadow h-100">
+
+            <img
+              src={item.product?.imageUrl}
+              alt={item.product?.productName}
+              className="card-img-top"
+              style={{
+                height: "250px",
+                objectFit: "cover"
+              }}
+            />
+
+            <div className="card-body">
+
+              <h5 className="card-title">
+                {item.product?.productName}
+              </h5>
+
+              <p className="card-text">
+                {item.product?.description}
+              </p>
+
+              <h5 className="text-success">
+                ₹ {item.product?.price}
+              </h5>
+
+              <button
+                className="btn btn-danger w-100"
+                onClick={() =>
+                  removeFromWishlist(
+                    item.product.id
+                  )
+                }
+              >
+                Remove From Wishlist
+              </button>
+
+            </div>
 
           </div>
 
-        ))
-      }
+        </div>
+
+      ))}
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Wishlist;

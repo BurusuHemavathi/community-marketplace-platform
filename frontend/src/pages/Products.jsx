@@ -62,35 +62,71 @@ function Products() {
     }
   };
 
-  return (
-    <div>
+return (
+  <div className="container mt-4">
 
-      <h1>Products Page</h1>
+    <h1 className="text-center mb-4">
+      Products
+    </h1>
 
-      <h2>Total Products: {products.length}</h2>
+    <h4 className="mb-4">
+      Total Products: {products.length}
+    </h4>
+
+    <div className="row">
 
       {products.map((product) => (
-        <div key={product.id}>
 
-          <h3>{product.productName}</h3>
+        <div
+          className="col-md-4 mb-4"
+          key={product.id}
+        >
 
-          <p>{product.description}</p>
+          <div className="card shadow h-100">
 
-          <p>₹ {product.price}</p>
+            <img
+              src={product.imageUrl}
+              alt={product.productName}
+              className="card-img-top"
+              style={{
+                height: "250px",
+                objectFit: "cover"
+              }}
+            />
 
-          <button
-            onClick={() => addToWishlist(product.id)}
-          >
-            Add To Wishlist
-          </button>
+            <div className="card-body">
 
-          <hr />
+              <h5 className="card-title">
+                {product.productName}
+              </h5>
+
+              <p className="card-text">
+                {product.description}
+              </p>
+
+              <h5 className="text-success">
+                ₹ {product.price}
+              </h5>
+
+              <button
+                className="btn btn-primary w-100"
+                onClick={() => addToWishlist(product.id)}
+              >
+                Add To Wishlist
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
+
       ))}
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Products;

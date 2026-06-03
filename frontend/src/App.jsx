@@ -7,10 +7,14 @@ import AddProduct from "./pages/AddProduct";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
+
+      <Navbar />
+
       <Routes>
 
         <Route path="/" element={<Login />} />
@@ -30,6 +34,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
