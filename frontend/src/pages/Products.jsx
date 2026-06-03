@@ -4,6 +4,7 @@ import api from "../services/api";
 function Products() {
 
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -62,6 +63,15 @@ function Products() {
     }
   };
 
+  const filteredProducts = products.filter(
+  (product) =>
+    product.productName
+      ?.toLowerCase()
+      .includes(
+        searchTerm.toLowerCase()
+      )
+);
+
 return (
   <div className="container mt-4">
 
@@ -72,10 +82,23 @@ return (
     <h4 className="mb-4">
       Total Products: {products.length}
     </h4>
+    <div className="mb-4">
+
+  <input
+    type="text"
+    className="form-control"
+    placeholder="Search Products..."
+    value={searchTerm}
+    onChange={(e) =>
+      setSearchTerm(e.target.value)
+    }
+  />
+
+</div>
 
     <div className="row">
 
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
 
         <div
           className="col-md-4 mb-4"
@@ -126,6 +149,7 @@ return (
     </div>
 
   </div>
+  
 );
 }
 

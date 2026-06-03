@@ -8,6 +8,7 @@ import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
+import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/products" element={<Products />} />
 
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
 
         <Route path="/wishlist" element={<Wishlist />} />
 

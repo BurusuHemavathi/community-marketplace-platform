@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 
 function Login() {
@@ -6,82 +7,126 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
- const handleLogin = async (e) => {
+  const navigate = useNavigate();
 
-  e.preventDefault();
+  const handleLogin = async (e) => {
 
-  try {
+    e.preventDefault();
 
-    alert("Before API Call");
+    try {
 
-    const response = await api.post(
-      "/authenticate",
-      {
-        email: email,
-        password: password
-      }
-    );
+      const response = await api.post(
+        "/authenticate",
+        {
+          email,
+          password
+        }
+      );
 
-alert(JSON.stringify(response.data));
+      localStorage.setItem(
+        "token",
+        response.data
+      );
 
-localStorage.setItem(
-  "token",
-  response.data
-);
-console.log(response.data);
+      alert("Login Successful");
 
-alert("Login Successful");
+      navigate("/dashboard");
 
-  } catch (error) {
+    } catch (error) {
 
-  alert(JSON.stringify(error.response?.data || error.message));
-}
-};
+      alert(
+        error.response?.data ||
+        error.message
+      );
+    }
+  };
 
   return (
-    <div>
+    <div className="container mt-5">
 
-      <h1>Community Marketplace</h1>
+      <div className="row justify-content-center">
 
-      <form onSubmit={handleLogin}>
+        <div className="col-md-5">
 
-        <div>
-          <label>Email</label>
-          <br />
+          <div className="card shadow">
 
-          <input
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-          />
+            <div className="card-body">
+
+              <h2 className="text-center mb-4">
+                Community Marketplace
+              </h2>
+
+              <form onSubmit={handleLogin}>
+
+                <div className="mb-3">
+
+                  <label className="form-label">
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) =>
+                      setEmail(e.target.value)
+                    }
+                    required
+                  />
+
+                </div>
+
+                <div className="mb-3">
+
+                  <label className="form-label">
+                    Password
+                  </label>
+
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter Password"
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value)
+                    }
+                    required
+                  />
+
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                >
+                  Login
+                </button>
+
+              </form>
+
+              <div className="text-center mt-3">
+
+                <p>
+                  Don't have an account?
+                </p>
+
+                <Link
+                  to="/register"
+                  className="btn btn-outline-success"
+                >
+                  Register
+                </Link>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <br />
-
-        <div>
-          <label>Password</label>
-          <br />
-
-          <input
-            type="password"
-            placeholder="Enter Password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-          />
-        </div>
-
-        <br />
-
-        <button type="submit">
-          Login
-        </button>
-
-      </form>
+      </div>
 
     </div>
   );
