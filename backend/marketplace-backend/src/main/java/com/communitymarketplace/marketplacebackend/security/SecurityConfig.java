@@ -33,6 +33,7 @@ public class SecurityConfig {
     ) throws Exception {
 
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
@@ -52,6 +53,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/admin/**")
                         .authenticated()
+
+                        .requestMatchers("/products/**")
+                        .permitAll()
 
                         .anyRequest()
                         .authenticated()

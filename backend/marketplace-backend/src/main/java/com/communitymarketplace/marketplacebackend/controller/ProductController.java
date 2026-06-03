@@ -69,7 +69,7 @@ public class ProductController {
             @RequestParam(defaultValue = "id")
             String sortBy
     ) {
-
+        System.out.println("GET PRODUCTS HIT");
         Page<ProductResponseDTO> products =
                 productService.getAllProducts(
                         page,
