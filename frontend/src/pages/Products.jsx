@@ -62,6 +62,33 @@ function Products() {
       );
     }
   };
+  const deleteProduct = async (productId) => {
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    await api.delete(
+      `/products/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Product Deleted");
+
+    fetchProducts();
+
+  } catch (error) {
+
+    alert(
+      error.response?.data ||
+      error.message
+    );
+  }
+};
 
   const filteredProducts = products.filter(
   (product) =>
@@ -131,12 +158,23 @@ return (
                 ₹ {product.price}
               </h5>
 
-              <button
-                className="btn btn-primary w-100"
-                onClick={() => addToWishlist(product.id)}
-              >
-                Add To Wishlist
-              </button>
+              <div className="d-grid gap-2">
+
+  <button
+    className="btn btn-primary"
+    onClick={() => addToWishlist(product.id)}
+  >
+    Add To Wishlist
+  </button>
+
+  <button
+    className="btn btn-danger"
+    onClick={() => deleteProduct(product.id)}
+  >
+    Delete Product
+  </button>
+
+</div>
 
             </div>
 
