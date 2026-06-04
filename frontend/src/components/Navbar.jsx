@@ -12,49 +12,64 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className="navbar navbar-expand-lg navbar-dark"
+      style={{
+        background:
+          "linear-gradient(90deg,#4f46e5,#7c3aed,#ec4899)"
+      }}
+    >
 
       <div className="container">
 
         <Link
-          className="navbar-brand"
-          to="/products"
+          className="navbar-brand fw-bold fs-4"
+          to="/dashboard"
         >
-          Community Marketplace
+          🛒 Community Marketplace
         </Link>
 
-       <div className="navbar-nav d-flex flex-row gap-3 align-items-center">
+        <div
+          className="navbar-nav d-flex flex-row gap-3 align-items-center"
+        >
 
           <Link
-            className="nav-link"
+            className="nav-link text-white"
+            to="/dashboard"
+          >
+            Dashboard
+          </Link>
+
+          <Link
+            className="nav-link text-white"
             to="/products"
           >
             Products
           </Link>
 
           <Link
-            className="nav-link"
+            className="nav-link text-white"
             to="/add-product"
           >
             Add Product
           </Link>
 
           <Link
-            className="nav-link"
+            className="nav-link text-white"
             to="/wishlist"
           >
             Wishlist
           </Link>
 
           <Link
-            className="nav-link"
+            className="nav-link text-white"
             to="/profile"
           >
             Profile
           </Link>
 
           <button
-            className="btn btn-danger ms-3"
+            className="btn btn-warning fw-bold"
             onClick={logout}
           >
             Logout

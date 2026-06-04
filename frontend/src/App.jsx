@@ -7,37 +7,72 @@ import AddProduct from "./pages/AddProduct";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
-import Navbar from "./components/Navbar";
 import UserDashboard from "./pages/UserDashboard";
 
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 function App() {
+
   return (
+
     <BrowserRouter>
 
       <Navbar />
 
       <Routes>
 
-        <Route path="/" element={<Login />} />
+        <Route
+          path="/"
+          element={<Login />}
+        />
 
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-        <Route path="/products" element={<Products />} />
+        <Route
+          path="/dashboard"
+          element={<UserDashboard />}
+        />
 
-        <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route
+          path="/admin"
+          element={<AdminDashboard />}
+        />
 
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route
+          path="/products"
+          element={<Products />}
+        />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/add-product"
+          element={<AddProduct />}
+        />
 
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route
+          path="/wishlist"
+          element={<Wishlist />}
+        />
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
 
       </Routes>
 
+      <Footer />
+
     </BrowserRouter>
+
   );
 }
 

@@ -3,117 +3,171 @@ import { Link } from "react-router-dom";
 function AdminDashboard() {
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-4">
 
-      <h1 className="text-center mb-4">
-        Admin Dashboard
-      </h1>
+      {/* HERO SECTION */}
+
+      <div
+        className="text-white p-5 rounded-4 shadow-lg mb-5"
+        style={{
+          background:
+            "linear-gradient(135deg,#0f172a,#1e293b,#7c3aed)"
+        }}
+      >
+
+        <h1 className="display-4 fw-bold">
+          🛡 Admin Control Center
+        </h1>
+
+        <p className="lead mt-3">
+          Manage products, monitor marketplace
+          activity and control platform operations.
+        </p>
+
+        <div className="mt-4">
+
+          <Link
+            to="/products"
+            className="btn btn-light btn-lg me-3"
+          >
+            Manage Products
+          </Link>
+
+          <Link
+            to="/add-product"
+            className="btn btn-warning btn-lg"
+          >
+            Add Product
+          </Link>
+
+        </div>
+
+      </div>
+
+      {/* ADMIN STATS */}
+
+      <div className="row mb-5">
+
+        <div className="col-md-4 mb-4">
+
+          <div className="card shadow text-center p-4">
+
+            <h1>📦</h1>
+
+            <h3>Products</h3>
+
+            <p>
+              View and manage marketplace products
+            </p>
+
+          </div>
+
+        </div>
+
+        <div className="col-md-4 mb-4">
+
+          <div className="card shadow text-center p-4">
+
+            <h1>👥</h1>
+
+            <h3>Users</h3>
+
+            <p>
+              Monitor registered users
+            </p>
+
+          </div>
+
+        </div>
+
+        <div className="col-md-4 mb-4">
+
+          <div className="card shadow text-center p-4">
+
+            <h1>❤️</h1>
+
+            <h3>Wishlist</h3>
+
+            <p>
+              Track user wishlist activity
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* QUICK ACTIONS */}
+
+      <div className="card shadow-lg p-4 mb-5">
+
+        <h2 className="text-center mb-4">
+          Quick Actions
+        </h2>
+
+        <div className="d-flex justify-content-center gap-3 flex-wrap">
+
+          <Link
+            to="/products"
+            className="btn btn-primary"
+          >
+            Products
+          </Link>
+
+          <Link
+            to="/add-product"
+            className="btn btn-success"
+          >
+            Add Product
+          </Link>
+
+          <Link
+            to="/wishlist"
+            className="btn btn-danger"
+          >
+            Wishlist
+          </Link>
+
+          <Link
+            to="/profile"
+            className="btn btn-warning"
+          >
+            Profile
+          </Link>
+
+        </div>
+
+      </div>
+
+      {/* SYSTEM STATUS */}
 
       <div className="row">
 
-        <div className="col-md-3 mb-4">
+        <div className="col-md-6 mb-4">
 
-          <div className="card shadow">
+          <div className="card shadow p-4">
 
-            <div className="card-body text-center">
+            <h3>🚀 Marketplace Status</h3>
 
-              <h3>📦</h3>
-
-              <h5>Products</h5>
-
-              <p>
-                Manage marketplace products
-              </p>
-
-              <Link
-                to="/products"
-                className="btn btn-primary"
-              >
-                View Products
-              </Link>
-
-            </div>
+            <p>
+              Platform is active and ready for users.
+            </p>
 
           </div>
 
         </div>
 
-        <div className="col-md-3 mb-4">
+        <div className="col-md-6 mb-4">
 
-          <div className="card shadow">
+          <div className="card shadow p-4">
 
-            <div className="card-body text-center">
+            <h3>🔒 Security</h3>
 
-              <h3>➕</h3>
-
-              <h5>Add Product</h5>
-
-              <p>
-                Add new products
-              </p>
-
-              <Link
-                to="/add-product"
-                className="btn btn-success"
-              >
-                Add Product
-              </Link>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="col-md-3 mb-4">
-
-          <div className="card shadow">
-
-            <div className="card-body text-center">
-
-              <h3>❤️</h3>
-
-              <h5>Wishlist</h5>
-
-              <p>
-                View wishlist items
-              </p>
-
-              <Link
-                to="/wishlist"
-                className="btn btn-danger"
-              >
-                Wishlist
-              </Link>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="col-md-3 mb-4">
-
-          <div className="card shadow">
-
-            <div className="card-body text-center">
-
-              <h3>👤</h3>
-
-              <h5>Profile</h5>
-
-              <p>
-                View admin profile
-              </p>
-
-              <Link
-                to="/profile"
-                className="btn btn-warning"
-              >
-                Profile
-              </Link>
-
-            </div>
+            <p>
+              JWT Authentication and Role Based
+              Access Control Enabled.
+            </p>
 
           </div>
 

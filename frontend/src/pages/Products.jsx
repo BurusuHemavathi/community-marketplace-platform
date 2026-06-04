@@ -62,133 +62,168 @@ function Products() {
       );
     }
   };
+
   const deleteProduct = async (productId) => {
 
-  try {
+    try {
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    await api.delete(
-      `/products/${productId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await api.delete(
+        `/products/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
-    );
+      );
 
-    alert("Product Deleted");
+      alert("Product Deleted");
 
-    fetchProducts();
+      fetchProducts();
 
-  } catch (error) {
+    } catch (error) {
 
-    alert(
-      error.response?.data ||
-      error.message
-    );
-  }
-};
+      alert(
+        error.response?.data ||
+        error.message
+      );
+    }
+  };
 
   const filteredProducts = products.filter(
-  (product) =>
-    product.productName
-      ?.toLowerCase()
-      .includes(
-        searchTerm.toLowerCase()
-      )
-);
+    (product) =>
+      product.productName
+        ?.toLowerCase()
+        .includes(
+          searchTerm.toLowerCase()
+        )
+  );
 
-return (
-  <div className="container mt-4">
+  return (
+    <div className="container mt-4">
 
-    <h1 className="text-center mb-4">
-      Products
-    </h1>
+      {/* HERO SECTION */}
 
-    <h4 className="mb-4">
-      Total Products: {products.length}
-    </h4>
-    <div className="mb-4">
+      <div
+        className="text-white p-5 rounded-4 shadow-lg mb-5"
+        style={{
+          background:
+            "linear-gradient(135deg,#2563eb,#7c3aed,#ec4899)"
+        }}
+      >
 
-  <input
-    type="text"
-    className="form-control"
-    placeholder="Search Products..."
-    value={searchTerm}
-    onChange={(e) =>
-      setSearchTerm(e.target.value)
-    }
-  />
+        <h1 className="display-4 fw-bold">
+          🛍 Products Marketplace
+        </h1>
 
-</div>
+        <p className="lead">
+          Discover amazing products from our marketplace.
+        </p>
 
-    <div className="row">
+      </div>
 
-      {filteredProducts.map((product) => (
+      {/* SEARCH */}
 
-        <div
-          className="col-md-4 mb-4"
-          key={product.id}
-        >
+      <div className="mb-4">
 
-          <div className="card shadow h-100">
+        <input
+          type="text"
+          className="form-control shadow-sm"
+          placeholder="🔍 Search Products..."
+          value={searchTerm}
+          onChange={(e) =>
+            setSearchTerm(e.target.value)
+          }
+          style={{
+            borderRadius: "15px",
+            padding: "12px"
+          }}
+        />
 
-            <img
-              src={product.imageUrl}
-              alt={product.productName}
-              className="card-img-top"
+      </div>
+
+      <h4 className="mb-4 fw-bold">
+        Total Products: {filteredProducts.length}
+      </h4>
+
+      <div className="row">
+
+        {filteredProducts.map((product) => (
+
+          <div
+            className="col-md-4 mb-4"
+            key={product.id}
+          >
+
+            <div
+              className="card h-100 border-0 shadow"
               style={{
-                height: "250px",
-                objectFit: "cover"
+                borderRadius: "20px",
+                overflow: "hidden"
               }}
-            />
+            >
 
-            <div className="card-body">
+              <img
+                src={product.imageUrl}
+                alt={product.productName}
+                className="card-img-top"
+                style={{
+                  height: "250px",
+                  objectFit: "cover"
+                }}
+              />
 
-              <h5 className="card-title">
-                {product.productName}
-              </h5>
+              <div className="card-body">
 
-              <p className="card-text">
-                {product.description}
-              </p>
+                <h4 className="fw-bold">
+                  {product.productName}
+                </h4>
 
-              <h5 className="text-success">
-                ₹ {product.price}
-              </h5>
+                <p className="text-muted">
+                  {product.description}
+                </p>
 
-              <div className="d-grid gap-2">
+                <span
+                  className="badge bg-success fs-6 p-2 mb-3"
+                >
+                  ₹ {product.price}
+                </span>
 
-  <button
-    className="btn btn-primary"
-    onClick={() => addToWishlist(product.id)}
-  >
-    Add To Wishlist
-  </button>
+                <div className="d-grid gap-2 mt-3">
 
-  <button
-    className="btn btn-danger"
-    onClick={() => deleteProduct(product.id)}
-  >
-    Delete Product
-  </button>
+                  <button
+                    className="btn btn-primary fw-bold"
+                    onClick={() =>
+                      addToWishlist(product.id)
+                    }
+                  >
+                    ❤️ Add To Wishlist
+                  </button>
 
-</div>
+                  <button
+                    className="btn btn-outline-danger fw-bold"
+                    onClick={() =>
+                      deleteProduct(product.id)
+                    }
+                  >
+                    🗑 Delete Product
+                  </button>
+
+                </div>
+
+              </div>
 
             </div>
 
           </div>
 
-        </div>
+        ))}
 
-      ))}
+      </div>
 
     </div>
-
-  </div>
-  
-);
+  );
 }
 
 export default Products;

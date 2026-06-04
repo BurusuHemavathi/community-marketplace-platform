@@ -24,7 +24,6 @@ function AddProduct() {
         category,
         imageUrl
       };
-      alert(JSON.stringify(product));
 
       await api.post(
         "/products",
@@ -36,7 +35,13 @@ function AddProduct() {
         }
       );
 
-      alert("Product Added Successfully");
+      alert("✅ Product Added Successfully");
+
+      setTitle("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+      setImageUrl("");
 
     } catch (error) {
 
@@ -50,63 +55,153 @@ function AddProduct() {
   };
 
   return (
-    <div>
 
-      <h1>Add Product</h1>
+    <div className="container py-5">
 
-      <form onSubmit={handleSubmit}>
+      <div className="row justify-content-center">
 
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className="col-lg-8">
 
-        <br /><br />
+          <div className="text-center mb-4">
 
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+            <h1 className="fw-bold">
+              📦 Add Product
+            </h1>
 
-        <br /><br />
+            <p className="text-light">
+              Create a new product listing
+            </p>
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+          </div>
 
-        <br /><br />
+          <div
+            className="card shadow-lg border-0"
+            style={{
+              borderRadius: "25px"
+            }}
+          >
 
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+            <div className="card-body p-5">
 
-        <br /><br />
+              <form onSubmit={handleSubmit}>
 
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-        />
+                <div className="mb-4">
 
-        <br /><br />
+                  <label className="form-label fw-bold">
+                    Product Title
+                  </label>
 
-        <button type="submit">
-          Add Product
-        </button>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Product Title"
+                    value={title}
+                    onChange={(e) =>
+                      setTitle(e.target.value)
+                    }
+                    required
+                  />
 
-      </form>
+                </div>
+
+                <div className="mb-4">
+
+                  <label className="form-label fw-bold">
+                    Description
+                  </label>
+
+                  <textarea
+                    className="form-control"
+                    rows="4"
+                    placeholder="Enter Product Description"
+                    value={description}
+                    onChange={(e) =>
+                      setDescription(e.target.value)
+                    }
+                    required
+                  />
+
+                </div>
+
+                <div className="row">
+
+                  <div className="col-md-6 mb-4">
+
+                    <label className="form-label fw-bold">
+                      Price
+                    </label>
+
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Enter Price"
+                      value={price}
+                      onChange={(e) =>
+                        setPrice(e.target.value)
+                      }
+                      required
+                    />
+
+                  </div>
+
+                  <div className="col-md-6 mb-4">
+
+                    <label className="form-label fw-bold">
+                      Category
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Electronics, Mobile..."
+                      value={category}
+                      onChange={(e) =>
+                        setCategory(e.target.value)
+                      }
+                      required
+                    />
+
+                  </div>
+
+                </div>
+
+                <div className="mb-4">
+
+                  <label className="form-label fw-bold">
+                    Product Image URL
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Paste Image URL"
+                    value={imageUrl}
+                    onChange={(e) =>
+                      setImageUrl(e.target.value)
+                    }
+                  />
+
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-success w-100 py-3 fw-bold"
+                >
+                  🚀 Add Product
+                </button>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
+
   );
 }
 
