@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 function UserDashboard() {
 
   return (
+
     <div className="container mt-4">
 
       {/* HERO SECTION */}
@@ -177,81 +178,8 @@ function UserDashboard() {
 
       </div>
 
-      {/* FEATURED PRODUCTS */}
-
-      <div className="mb-5">
-
-        <h2 className="mb-4 text-center">
-          🔥 Featured Products
-        </h2>
-
-        <div className="row">
-
-          <div className="col-md-4 mb-4">
-
-            <div className="card shadow h-100">
-
-              <div className="card-body text-center">
-
-                <h1>📱</h1>
-
-                <h4>Smart Phones</h4>
-
-                <p>
-                  Explore the latest mobile devices.
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div className="col-md-4 mb-4">
-
-            <div className="card shadow h-100">
-
-              <div className="card-body text-center">
-
-                <h1>💻</h1>
-
-                <h4>Laptops</h4>
-
-                <p>
-                  Powerful laptops for study and work.
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div className="col-md-4 mb-4">
-
-            <div className="card shadow h-100">
-
-              <div className="card-body text-center">
-
-                <h1>🎧</h1>
-
-                <h4>Accessories</h4>
-
-                <p>
-                  Headphones, gadgets and accessories.
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
+
   );
 }
 

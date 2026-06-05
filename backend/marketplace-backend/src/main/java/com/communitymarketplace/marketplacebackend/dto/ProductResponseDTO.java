@@ -8,6 +8,7 @@ public class ProductResponseDTO {
     private Double price;
     private String category;
     private String sellerName;
+    private String sellerEmail;
     private String imageUrl;
 
     public Long getId() {
@@ -56,6 +57,14 @@ public class ProductResponseDTO {
 
     public void setSellerName(String sellerName) {
         this.sellerName = sellerName;
+    }
+
+    public String getSellerEmail() {
+        return sellerEmail;
+    }
+
+    public void setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
 
     public String getImageUrl() {

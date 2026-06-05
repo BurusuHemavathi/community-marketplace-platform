@@ -11,6 +11,7 @@ import UserDashboard from "./pages/UserDashboard";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Users from "./pages/Users";
 
 function App() {
 
@@ -21,6 +22,11 @@ function App() {
       <Navbar />
 
       <Routes>
+
+        <Route
+  path="/users"
+  element={<Users />}
+/>
 
         <Route
           path="/"

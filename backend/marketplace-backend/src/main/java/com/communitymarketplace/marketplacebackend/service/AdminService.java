@@ -33,6 +33,13 @@ public class AdminService {
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
 
+        if(user.getRole().equalsIgnoreCase("ADMIN")) {
+
+            throw new RuntimeException(
+                    "Admin cannot be deleted"
+            );
+        }
+
         userRepository.delete(user);
 
         return "User deleted successfully";

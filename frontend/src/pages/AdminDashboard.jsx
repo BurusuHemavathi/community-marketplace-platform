@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 function AdminDashboard() {
 
   return (
+
     <div className="container mt-4">
 
       {/* HERO SECTION */}
@@ -20,8 +21,8 @@ function AdminDashboard() {
         </h1>
 
         <p className="lead mt-3">
-          Manage products, monitor marketplace
-          activity and control platform operations.
+          Manage products, monitor marketplace activity
+          and control platform operations.
         </p>
 
         <div className="mt-4">
@@ -44,55 +45,106 @@ function AdminDashboard() {
 
       </div>
 
-      {/* ADMIN STATS */}
+      {/* ADMIN ACTION CARDS */}
 
       <div className="row mb-5">
 
         <div className="col-md-4 mb-4">
 
-          <div className="card shadow text-center p-4">
+          <Link
+            to="/products"
+            style={{
+              textDecoration: "none"
+            }}
+          >
 
-            <h1>📦</h1>
+            <div className="card shadow h-100">
 
-            <h3>Products</h3>
+              <div className="card-body text-center p-4">
 
-            <p>
-              View and manage marketplace products
-            </p>
+                <h1>📦</h1>
 
-          </div>
+                <h3>Products</h3>
+
+                <p>
+                  View and manage all marketplace products.
+                </p>
+
+                <button className="btn btn-primary">
+                  Open Products
+                </button>
+
+              </div>
+
+            </div>
+
+          </Link>
 
         </div>
 
         <div className="col-md-4 mb-4">
 
-          <div className="card shadow text-center p-4">
+          <Link
+            to="/users"
+            style={{
+              textDecoration: "none"
+            }}
+          >
 
-            <h1>👥</h1>
+            <div className="card shadow h-100">
 
-            <h3>Users</h3>
+              <div className="card-body text-center p-4">
 
-            <p>
-              Monitor registered users
-            </p>
+                <h1>👥</h1>
 
-          </div>
+                <h3>Users</h3>
+
+                <p>
+                  View all registered users.
+                </p>
+
+                <button className="btn btn-success">
+                  View Users
+                </button>
+
+              </div>
+
+            </div>
+
+          </Link>
 
         </div>
 
         <div className="col-md-4 mb-4">
 
-          <div className="card shadow text-center p-4">
+          <Link
+            to="/wishlist"
+            style={{
+              textDecoration: "none"
+            }}
+          >
 
-            <h1>❤️</h1>
+            <div className="card shadow h-100">
 
-            <h3>Wishlist</h3>
+              <div className="card-body text-center p-4">
 
-            <p>
-              Track user wishlist activity
-            </p>
+                <h1>❤️</h1>
 
-          </div>
+                <h3>Wishlist</h3>
+
+                <p>
+                  Track user wishlist activity.
+                </p>
+
+                <button className="btn btn-danger">
+                  Open Wishlist
+                </button>
+
+              </div>
+
+            </div>
+
+          </Link>
 
         </div>
 
@@ -103,7 +155,7 @@ function AdminDashboard() {
       <div className="card shadow-lg p-4 mb-5">
 
         <h2 className="text-center mb-4">
-          Quick Actions
+          ⚡ Quick Actions
         </h2>
 
         <div className="d-flex justify-content-center gap-3 flex-wrap">
@@ -113,6 +165,13 @@ function AdminDashboard() {
             className="btn btn-primary"
           >
             Products
+          </Link>
+
+          <Link
+            to="/users"
+            className="btn btn-dark"
+          >
+            Users
           </Link>
 
           <Link
@@ -129,18 +188,11 @@ function AdminDashboard() {
             Wishlist
           </Link>
 
-          <Link
-            to="/profile"
-            className="btn btn-warning"
-          >
-            Profile
-          </Link>
-
         </div>
 
       </div>
 
-      {/* SYSTEM STATUS */}
+      {/* STATUS */}
 
       <div className="row">
 
@@ -165,8 +217,8 @@ function AdminDashboard() {
             <h3>🔒 Security</h3>
 
             <p>
-              JWT Authentication and Role Based
-              Access Control Enabled.
+              JWT Authentication and Role-Based Access
+              Control are enabled.
             </p>
 
           </div>
@@ -176,6 +228,7 @@ function AdminDashboard() {
       </div>
 
     </div>
+
   );
 }
 

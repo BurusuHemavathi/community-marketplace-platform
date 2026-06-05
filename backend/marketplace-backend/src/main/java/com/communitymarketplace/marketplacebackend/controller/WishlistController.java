@@ -43,4 +43,17 @@ public class WishlistController {
 
         return ResponseEntity.ok(wishlist);
     }
+    @DeleteMapping("/wishlist/{productId}")
+    public ResponseEntity<?> removeFromWishlist(
+            @PathVariable Long productId,
+            Principal principal
+    ) {
+
+        return ResponseEntity.ok(
+                wishlistService.removeFromWishlist(
+                        productId,
+                        principal.getName()
+                )
+        );
+    }
 }

@@ -4,14 +4,24 @@ function Navbar() {
 
   const navigate = useNavigate();
 
+  const role =
+    localStorage.getItem("role");
+
+  const dashboardPath =
+    role === "ADMIN"
+      ? "/admin"
+      : "/dashboard";
+
   const logout = () => {
 
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
 
     navigate("/login");
   };
 
   return (
+
     <nav
       className="navbar navbar-expand-lg navbar-dark"
       style={{
@@ -24,7 +34,7 @@ function Navbar() {
 
         <Link
           className="navbar-brand fw-bold fs-4"
-          to="/dashboard"
+          to={dashboardPath}
         >
           🛒 Community Marketplace
         </Link>
@@ -35,7 +45,7 @@ function Navbar() {
 
           <Link
             className="nav-link text-white"
-            to="/dashboard"
+            to={dashboardPath}
           >
             Dashboard
           </Link>
@@ -80,6 +90,7 @@ function Navbar() {
       </div>
 
     </nav>
+
   );
 }
 

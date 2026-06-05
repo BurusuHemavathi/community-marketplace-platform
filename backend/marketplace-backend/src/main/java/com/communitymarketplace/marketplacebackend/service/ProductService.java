@@ -184,9 +184,17 @@ public class ProductService {
 
         dto.setCategory(product.getCategory());
 
-        dto.setSellerName(product.getSeller().getName());
+        dto.setSellerName(
+                product.getSeller().getName()
+        );
 
-        dto.setImageUrl(product.getImageUrl());
+        dto.setSellerEmail(
+                product.getSeller().getEmail()
+        );
+
+        dto.setImageUrl(
+                product.getImageUrl()
+        );
 
         return dto;
     }

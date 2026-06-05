@@ -174,45 +174,89 @@ function Products() {
                 }}
               />
 
-              <div className="card-body">
+<div
+  className="card-body"
+  style={{
+    backgroundColor: "#1f2937",
+    color: "white"
+  }}
+>
 
-                <h4 className="fw-bold">
-                  {product.productName}
-                </h4>
+  <h4
+    className="fw-bold mb-2"
+    style={{
+      color: "#ffffff"
+    }}
+  >
+    {product.productName}
+  </h4>
 
-                <p className="text-muted">
-                  {product.description}
-                </p>
+  <p
+    style={{
+      color: "#d1d5db",
+      marginBottom: "8px"
+    }}
+  >
+    👤 Seller: {product.sellerName}
+  </p>
 
-                <span
-                  className="badge bg-success fs-6 p-2 mb-3"
-                >
-                  ₹ {product.price}
-                </span>
+  <span
+    className="badge bg-info text-dark mb-2"
+  >
+    {product.category}
+  </span>
 
-                <div className="d-grid gap-2 mt-3">
+  <p
+    style={{
+      color: "#f3f4f6",
+      minHeight: "60px"
+    }}
+  >
+    {product.description}
+  </p>
 
-                  <button
-                    className="btn btn-primary fw-bold"
-                    onClick={() =>
-                      addToWishlist(product.id)
-                    }
-                  >
-                    ❤️ Add To Wishlist
-                  </button>
+  <h5
+    className="fw-bold text-success mb-3"
+  >
+    ₹ {product.price}
+  </h5>
 
-                  <button
-                    className="btn btn-outline-danger fw-bold"
-                    onClick={() =>
-                      deleteProduct(product.id)
-                    }
-                  >
-                    🗑 Delete Product
-                  </button>
+  <div className="d-grid gap-2">
 
-                </div>
+<button
+  className="btn btn-warning fw-bold"
+  onClick={() =>
+    alert(
+      `👤 Seller Name: ${product.sellerName}
 
-              </div>
+📧 Seller Email: ${product.sellerEmail}`
+    )
+  }
+>
+  👤 Seller Details
+</button>
+
+    <button
+      className="btn btn-primary fw-bold"
+      onClick={() =>
+        addToWishlist(product.id)
+      }
+    >
+      ❤️ Add To Wishlist
+    </button>
+
+    <button
+      className="btn btn-outline-danger fw-bold"
+      onClick={() =>
+        deleteProduct(product.id)
+      }
+    >
+      🗑 Delete Product
+    </button>
+
+  </div>
+
+</div>
 
             </div>
 

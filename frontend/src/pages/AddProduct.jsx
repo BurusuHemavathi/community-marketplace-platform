@@ -7,7 +7,7 @@ function AddProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const handleSubmit = async (e) => {
 
@@ -17,12 +17,39 @@ function AddProduct() {
 
       const token = localStorage.getItem("token");
 
+      let uploadedImageUrl = "";
+
+      if (imageFile) {
+
+        const formData = new FormData();
+
+        formData.append(
+          "file",
+          imageFile
+        );
+
+        const uploadResponse =
+          await api.post(
+            "/upload-image",
+            formData,
+            {
+              headers: {
+                "Content-Type":
+                  "multipart/form-data"
+              }
+            }
+          );
+
+        uploadedImageUrl =
+          uploadResponse.data;
+      }
+console.log(uploadedImageUrl);
       const product = {
         title,
         description,
         price,
         category,
-        imageUrl
+        imageUrl: uploadedImageUrl
       };
 
       await api.post(
@@ -41,12 +68,13 @@ function AddProduct() {
       setDescription("");
       setPrice("");
       setCategory("");
-      setImageUrl("");
+      setImageFile(null);
 
     } catch (error) {
 
       alert(
         error.response?.data?.message ||
+        error.message ||
         "Failed To Add Product"
       );
 
@@ -69,7 +97,7 @@ function AddProduct() {
             </h1>
 
             <p className="text-light">
-              Create a new product listing
+              Create a new marketplace product
             </p>
 
           </div>
@@ -84,6 +112,25 @@ function AddProduct() {
             <div className="card-body p-5">
 
               <form onSubmit={handleSubmit}>
+
+                <div className="mb-4">
+
+                  <label className="form-label fw-bold">
+                    Product Image
+                  </label>
+
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={(e) =>
+                      setImageFile(
+                        e.target.files[0]
+                      )
+                    }
+                    required
+                  />
+
+                </div>
 
                 <div className="mb-4">
 
@@ -116,7 +163,9 @@ function AddProduct() {
                     placeholder="Enter Product Description"
                     value={description}
                     onChange={(e) =>
-                      setDescription(e.target.value)
+                      setDescription(
+                        e.target.value
+                      )
                     }
                     required
                   />
@@ -156,30 +205,14 @@ function AddProduct() {
                       placeholder="Electronics, Mobile..."
                       value={category}
                       onChange={(e) =>
-                        setCategory(e.target.value)
+                        setCategory(
+                          e.target.value
+                        )
                       }
                       required
                     />
 
                   </div>
-
-                </div>
-
-                <div className="mb-4">
-
-                  <label className="form-label fw-bold">
-                    Product Image URL
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Paste Image URL"
-                    value={imageUrl}
-                    onChange={(e) =>
-                      setImageUrl(e.target.value)
-                    }
-                  />
 
                 </div>
 

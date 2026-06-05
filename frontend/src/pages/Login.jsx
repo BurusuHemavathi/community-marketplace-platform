@@ -9,6 +9,8 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const ADMIN_EMAIL = "admin@gmail.com";
+
   const handleLogin = async (e) => {
 
     e.preventDefault();
@@ -27,10 +29,30 @@ function Login() {
         "token",
         response.data
       );
+      console.log(response.data);
 
-      alert("Login Successful");
+      if (
+        email.toLowerCase() ===
+        ADMIN_EMAIL.toLowerCase()
+      ) {
 
-      navigate("/dashboard");
+        localStorage.setItem(
+          "role",
+          "ADMIN"
+        );
+
+        navigate("/admin");
+
+      } else {
+
+        localStorage.setItem(
+          "role",
+          "USER"
+        );
+
+        navigate("/dashboard");
+
+      }
 
     } catch (error) {
 
