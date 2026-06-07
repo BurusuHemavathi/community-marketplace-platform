@@ -12,13 +12,11 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
 
-        CorsConfiguration config =
-                new CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://community-marketplace-frontend.onrender.com");
 
         config.addAllowedHeader("*");
-
         config.addAllowedMethod("*");
 
         config.setAllowCredentials(true);
@@ -26,10 +24,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration(
-                "/**",
-                config
-        );
+        source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
     }
