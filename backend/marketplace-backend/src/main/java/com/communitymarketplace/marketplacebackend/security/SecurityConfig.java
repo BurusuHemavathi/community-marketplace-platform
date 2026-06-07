@@ -46,6 +46,7 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 "/authenticate",
+                                "/api/auth/**",
                                 "/users",
                                 "/upload-image",
                                 "/swagger-ui/**",
@@ -67,7 +68,7 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
 
-                .httpBasic(Customizer.withDefaults());
+                .exceptionHandling(Customizer.withDefaults());
 
         return http.build();
     }
