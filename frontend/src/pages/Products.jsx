@@ -17,7 +17,7 @@ function Products() {
       const token = localStorage.getItem("token");
 
       const response = await api.get(
-        "/products?page=0&size=20&sortBy=id",
+        "/products?page=0&size=100&sortBy=id",
         {
           headers: {
             Authorization: `Bearer ${token}`
