@@ -146,7 +146,7 @@ https://community-marketplace-backend-u5ms.onrender.com/swagger-ui/index.html
 
 ### Login Page
 
-![Login](screenshots/login.png)
+![Login](screenshots/login.png.png)
 
 ---
 
