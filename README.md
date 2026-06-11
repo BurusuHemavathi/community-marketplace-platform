@@ -142,6 +142,42 @@ https://community-marketplace-backend-u5ms.onrender.com/swagger-ui/index.html
 
 ---
 
+## Project Screenshots
+
+### Login Page
+
+![Login](screenshots/login.png)
+
+---
+
+### User Dashboard
+
+![User Dashboard](screenshots/user_dashboard.png.png)
+
+---
+
+### Products Page
+
+![Products](screenshots/products.png.png)
+
+---
+
+### Add Product Page
+
+![Add Product](screenshots/add_product.png.png)
+
+---
+
+### Wishlist
+
+![Wishlist](screenshots/wishlist.png.png)
+
+---
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin_dashboard.png.png)
+
 ## Author
 
 Burusu Hemavathi
