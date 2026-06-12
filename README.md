@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Community Marketplace Platform
 
 ## Project Overview
@@ -91,13 +90,21 @@ This platform provides a simple solution where users can:
 ## Architecture
 
 Frontend (React)
+
 ↓
+
 REST API Communication
+
 ↓
+
 Spring Boot Backend
+
 ↓
+
 MySQL Database
+
 ↓
+
 Cloudinary Image Storage
 
 ---
@@ -170,6 +177,4 @@ Burusu Hemavathi
 B.Tech - Computer Science and Data Science
 
 Mohan Babu University
-
-Aspiring Full Stack Java Developer
 =======
