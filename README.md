@@ -146,38 +146,22 @@ https://community-marketplace-backend-u5ms.onrender.com/swagger-ui/index.html
 ## Project Screenshots
 
 ### Login Page
-
-![Login](screenshots/login.png.png)
-
----
+![Login](screenshots/login.png)
 
 ### User Dashboard
-
-![User Dashboard](screenshots/user_dashboard.png.png)
-
----
+![User Dashboard](screenshots/user_dashboard.png)
 
 ### Products Page
-
-![Products](screenshots/products.png.png)
-
----
+![Products](screenshots/products.png)
 
 ### Add Product Page
-
-![Add Product](screenshots/add_product.png.png)
-
----
+![Add Product](screenshots/add_product.png)
 
 ### Wishlist
-
-![Wishlist](screenshots/wishlist.png.png)
-
----
+![Wishlist](screenshots/wishlist.png)
 
 ### Admin Dashboard
-
-![Admin Dashboard](screenshots/admin_dashboard.png.png)
+![Admin Dashboard](screenshots/admin_dashboard.png)
 
 ## Author
 
@@ -189,5 +173,3 @@ Mohan Babu University
 
 Aspiring Full Stack Java Developer
 =======
-# Community Marketplace Platform
->>>>>>> c69b3bc (Add project screenshots)
