@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Community Marketplace Platform
 
 ## Project Overview
@@ -187,3 +188,6 @@ B.Tech - Computer Science and Data Science
 Mohan Babu University
 
 Aspiring Full Stack Java Developer
+=======
+# Community Marketplace Platform
+>>>>>>> c69b3bc (Add project screenshots)
